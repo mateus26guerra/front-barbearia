@@ -1,24 +1,24 @@
 {
   "/api": {
-    "target": "http://localhost:8080",
+    "target": "https://back-end-barbearia-1.onrender.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/atendimentos": {
-    "target": "http://localhost:8080",
+    "target": "https://back-end-barbearia-1.onrender.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/clientes": {
-    "target": "http://localhost:8080",
+    "target": "https://back-end-barbearia-1.onrender.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/servicos": {
-    "target": "http://localhost:8080",
+    "target": "https://back-end-barbearia-1.onrender.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
