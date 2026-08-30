@@ -1,6 +1,5 @@
 # ✅ Gerenciamento de Agendamentos - Barbearia
 
-Este é um projeto front-end desenvolvido como parte do **Desafio DIO**, onde foi criado um sistema de gerenciamento de agendamentos para uma barbearia. O projeto foi construído utilizando **Angular** para a estrutura e **Bootstrap** para o design responsivo e moderno.
 
 ## ✨ Tecnologias Utilizadas
 
@@ -23,7 +22,7 @@ Certifique-se de ter o **Node.js** instalado para rodar o Angular.
 
 1. Clone este repositório:
    ```sh
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+   git clone https://github.com/mateus26guerra/front-barbearia.git
    ```
 
 2. Acesse a pasta do projeto:
@@ -50,5 +49,4 @@ Certifique-se de ter o **Node.js** instalado para rodar o Angular.
 
 ---
 
-Desenvolvido com ❤️ como parte do **Desafio DIO**.
 
