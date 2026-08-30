@@ -13,7 +13,7 @@ export interface Servico {
 })
 export class ServicoService {
 
-  private readonly apiUrl = '/servicos';
+  private readonly apiUrl = 'http://localhost:8080/servicos';
 
   constructor(private http: HttpClient) {}
 

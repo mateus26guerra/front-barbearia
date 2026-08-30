@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private readonly apiUrl = '/api/barbearias';
+  private readonly apiUrl = 'https://back-end-barbearia-1.onrender.com/barbearias';
 
   constructor(private http: HttpClient) { }
 

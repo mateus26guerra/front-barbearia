@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', component: IndexComponent },
   { path: 'home', component: MainAtividadeComponent },
   { path: 'agendar', component: MainAtividadeComponent },
-  { path: 'servicos', component: CriarServicoComponent },
+  { path: 'gerenciar-servicos', component: CriarServicoComponent },
   { path: 'pagamento', component: TelaFiltroComponent },
   { path: 'Dashboard', component: DashboardComponent },
   { path: 'cortedia', component: CorteDoDiaComponent }

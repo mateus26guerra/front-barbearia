@@ -13,7 +13,7 @@ export interface Cliente {
 })
 export class ClienteService {
 
-  private readonly apiUrl = '/clientes';
+  private readonly apiUrl = 'http://localhost:8080/clientes';
 
   constructor(private http: HttpClient) { }
 

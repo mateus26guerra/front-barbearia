@@ -35,7 +35,7 @@ export interface Atendimento {
 })
 export class AtendimentoService {
 
-  private readonly apiUrl = '/atendimentos';
+  private readonly apiUrl = 'http://localhost:8080/atendimentos';
 
   constructor(private http: HttpClient) { }
 
@@ -63,10 +63,10 @@ export class AtendimentoService {
   }
 
   gerarRelatorio(): Observable<Blob> {
-    return this.http.get('/pdf/relatorio', { responseType: 'blob' });
+    return this.http.get('http://localhost:8080/pdf/relatorio', { responseType: 'blob' });
   }
 
   gerarNotaFiscal(id: string): Observable<Blob> {
-    return this.http.get(`/pdf/nota/${id}`, { responseType: 'blob' });
+    return this.http.get(`http://localhost:8080/pdf/nota/${id}`, { responseType: 'blob' });
   }
 }
