@@ -42,11 +42,4 @@ Certifique-se de ter o **Node.js** instalado para rodar o Angular.
 
 5. Acesse no navegador: `http://localhost:4200`
 
-## 🌟 Melhorias Futuras
-- Integração com API para persistência de dados.
-- Implementação de autenticação de usuários.
-- Novas funcionalidades como escolha de barbeiros e serviços adicionais.
-
----
-
 
