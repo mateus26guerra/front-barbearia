@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuarioService } from '../../services/usuario.service';
+import { AtendimentoService, Atendimento } from '../../services/atendimento-api.service';
+import { ClienteService, Cliente } from '../../services/cliente.service';
+import { ServicoService } from '../../services/servico.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,105 +12,240 @@ import Swal from 'sweetalert2';
 })
 export class AdicionarUsuarioComponent implements OnInit {
 
-  usuario = {
-    nome: '',
-    diaParaCorte: '',
-    inicioDoCorte: '',
-    tipoServico: '',
-    statusServico: '',
-    statusPagamento: '',
-    precoBarbearia: null
+  atendimento: Atendimento = {
+    cliente: {
+      id: ''
+    },
+    servicos: [],
+    data: '',
+    statusServico: 'ESPERADO',
+    statusPagamento: 'NAO_PAGO'
   };
 
-  usuarios: any[] = [];
-  usuarioSelecionadoId: number | null = null;
+  atendimentos: Atendimento[] = [];
+  clientes: Cliente[] = [];
+  servicos: any[] = [];
 
-  constructor(private usuarioService: UsuarioService) { }
+  mostrarCadastroCliente = false;
+  novoCliente: Cliente = {
+    nome: '',
+    numero: ''
+  };
 
-  ngOnInit(): void {
-    this.listarUsuarios();
-  }
+  atendimentoSelecionadoId: string | null = null;
 
-  listarUsuarios(): void {
-    this.usuarioService.listarUsuarios().subscribe(data => {
-      this.usuarios = data;
+  constructor(
+    private atendimentoService: AtendimentoService,
+    private clienteService: ClienteService,
+    private servicoService: ServicoService
+  ) {}
+
+  gerarRelatorioPDF(): void {
+    this.atendimentoService.gerarRelatorio().subscribe(pdfBlob => {
+      const url = window.URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'relatorio_atendimentos.pdf';
+      link.click();
+      window.URL.revokeObjectURL(url);
     });
   }
 
-  // Função para extrair só o "HH:mm" do OffsetTime (ex: "10:30:00-03:00" -> "10:30")
-  formatarHorario(horarioComOffset: string): string {
-    if (!horarioComOffset) return '';
-    return horarioComOffset.split('-')[0].substring(0, 5);
-  }
-
-  adicionarOuAtualizarUsuario(): void {
-    // Adiciona ":00-03:00" ao horário para enviar o formato OffsetTime esperado no backend
-    if (this.usuario.inicioDoCorte && this.usuario.inicioDoCorte.length === 5) {
-      this.usuario.inicioDoCorte = this.usuario.inicioDoCorte + ':00-03:00';
+  gerarNotaFiscal(id: string | undefined): void {
+    if (!id) {
+      return;
     }
 
-    if (this.usuarioSelecionadoId) {
-      this.usuarioService.atualizarUsuario(this.usuarioSelecionadoId.toString(), this.usuario)
-        .subscribe(() => {
-          Swal.fire('Sucesso!', 'Cliente atualizado com sucesso!', 'success');
-          this.limparFormulario();
-          this.listarUsuarios();
-        });
-    } else {
-      this.usuarioService.adicionarUsuario(this.usuario)
-        .subscribe(() => {
-          Swal.fire('Sucesso!', 'Cliente adicionado com sucesso!', 'success');
-          this.limparFormulario();
-          this.listarUsuarios();
-        });
-    }
+    this.atendimentoService.gerarNotaFiscal(id).subscribe(pdfBlob => {
+      const url = window.URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `nota_fiscal_${id}.pdf`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+    });
   }
 
-  editarUsuario(usuario: any): void {
-    this.usuario = { ...usuario };
-    // Remove offset para preencher o input time com "HH:mm"
-    if (this.usuario.inicioDoCorte) {
-      this.usuario.inicioDoCorte = this.formatarHorario(this.usuario.inicioDoCorte);
-    }
-    this.usuarioSelecionadoId = usuario.id;
+  ngOnInit(): void {
+    this.listarAtendimentos();
+    this.listarClientes();
+    this.listarServicos();
   }
 
-  excluirUsuario(id: string): void {
-    Swal.fire({
-      title: 'Tem certeza?',
-      text: 'Você quer realmente excluir este cliente?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sim, excluir!',
-      cancelButtonText: 'Cancelar',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.usuarioService.excluirUsuario(id).subscribe(() => {
-          Swal.fire(
-            'Excluído!',
-            'Cliente excluído com sucesso.',
-            'success'
-          );
-          this.listarUsuarios();
-          if (this.usuarioSelecionadoId === +id) {
-            this.limparFormulario();
-          }
-        });
+  listarAtendimentos(): void {
+    this.atendimentoService.listar().subscribe({
+      next: (dados) => this.atendimentos = dados,
+      error: (erro) => console.error(erro)
+    });
+  }
+
+  listarClientes(): void {
+    this.clienteService.listarTodos().subscribe({
+      next: (dados) => this.clientes = dados,
+      error: (erro) => console.error(erro)
+    });
+  }
+
+  listarServicos(): void {
+    this.servicoService.listarTodos().subscribe({
+      next: (dados) => this.servicos = dados,
+      error: (erro) => console.error(erro)
+    });
+  }
+
+  abrirCadastroCliente(): void {
+    this.mostrarCadastroCliente = true;
+  }
+
+  cancelarCadastroCliente(): void {
+    this.mostrarCadastroCliente = false;
+    this.novoCliente = {
+      nome: '',
+      numero: ''
+    };
+  }
+
+  criarCliente(): void {
+    if (!this.novoCliente.nome?.trim() || !this.novoCliente.numero?.trim()) {
+      Swal.fire('Atenção', 'Informe nome e número do cliente.', 'warning');
+      return;
+    }
+
+    this.clienteService.criar(this.novoCliente).subscribe({
+      next: (cliente) => {
+        this.clientes.push(cliente);
+
+        if (cliente.id) {
+          this.atendimento.cliente.id = cliente.id;
+        }
+
+        this.mostrarCadastroCliente = false;
+        this.novoCliente = {
+          nome: '',
+          numero: ''
+        };
+
+        Swal.fire('Sucesso!', 'Cliente cadastrado.', 'success');
+      },
+      error: (erro) => {
+        console.error(erro);
+        Swal.fire('Erro', 'Não foi possível cadastrar o cliente.', 'error');
       }
     });
   }
 
-  limparFormulario(): void {
-    this.usuario = {
-      nome: '',
-      diaParaCorte: '',
-      inicioDoCorte: '',
-      tipoServico: '',
-      statusServico: '',
-      statusPagamento: '',
-      precoBarbearia: null
-    };
-    this.usuarioSelecionadoId = null;
+  salvar(): void {
+
+    if (this.atendimentoSelecionadoId) {
+
+      this.atendimentoService.editar(
+        this.atendimentoSelecionadoId,
+        this.atendimento
+      ).subscribe(() => {
+
+        Swal.fire(
+          'Sucesso!',
+          'Atendimento atualizado.',
+          'success'
+        );
+
+        this.limparFormulario();
+        this.listarAtendimentos();
+
+      });
+
+    } else {
+
+      this.atendimentoService.criar(this.atendimento)
+        .subscribe(() => {
+
+          Swal.fire(
+            'Sucesso!',
+            'Atendimento cadastrado.',
+            'success'
+          );
+
+          this.limparFormulario();
+          this.listarAtendimentos();
+
+        });
+
+    }
+
   }
+
+  editar(atendimento: Atendimento): void {
+
+    this.atendimento = {
+      cliente: {
+        id: atendimento.cliente.id
+      },
+      servicos: atendimento.servicos,
+      data: atendimento.data.substring(0, 16),
+      statusServico: atendimento.statusServico,
+      statusPagamento: atendimento.statusPagamento
+    };
+
+    this.atendimentoSelecionadoId = atendimento.id ?? null;
+
+  }
+
+  excluir(id?: string): void {
+
+    if (!id) {
+      console.warn('Tentativa de excluir atendimento sem ID.');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Excluir atendimento?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+
+      if (result.isConfirmed) {
+
+        this.atendimentoService.deletar(id).subscribe(() => {
+
+          Swal.fire(
+            'Sucesso!',
+            'Atendimento excluído.',
+            'success'
+          );
+
+          this.listarAtendimentos();
+
+          if (this.atendimentoSelecionadoId === id) {
+            this.limparFormulario();
+          }
+
+        });
+
+      }
+
+    });
+
+  }
+
+  limparFormulario(): void {
+
+    this.atendimento = {
+      cliente: {
+        id: ''
+      },
+      servicos: [],
+      data: '',
+      statusServico: 'ESPERADO',
+      statusPagamento: 'NAO_PAGO'
+    };
+
+    this.atendimentoSelecionadoId = null;
+
+  }
+
+
+
+  
 }

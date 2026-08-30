@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioService {
-private apiUrl = 'http://localhost:8080/api/barbearias';
-
+  private readonly apiUrl = '/api/barbearias';
 
   constructor(private http: HttpClient) { }
 

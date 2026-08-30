@@ -14,6 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { TelaFiltroComponent } from './page/tela-filtro/tela-filtro.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { CorteDoDiaComponent } from './page/corte-do-dia/corte-do-dia.component';
+import { CriarServicoComponent } from './components/criar-servico/criar-servico.component';
+import { BaseChartDirective } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -25,14 +27,16 @@ import { CorteDoDiaComponent } from './page/corte-do-dia/corte-do-dia.component'
     IndexComponent,
     TelaFiltroComponent,
     DashboardComponent,
-    CorteDoDiaComponent
+    CorteDoDiaComponent,
+    CriarServicoComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BaseChartDirective
   ],
   providers: [],
   bootstrap: [AppComponent]

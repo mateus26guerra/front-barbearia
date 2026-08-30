@@ -82,4 +82,135 @@
   .custom-btn:hover {
     background-color: #000000; /* Um tom mais claro de preto quando passar o mouse */
   }
-  
+  /* =========================
+   BASE
+========================= */
+body {
+  font-family: "Oswald", sans-serif;
+  background-color: #f5f6fa;
+  color: #222;
+}
+
+/* =========================
+   TÍTULO
+========================= */
+.linha-preta {
+  width: 120px;
+  height: 3px;
+  background-color: #111;
+  margin: 0 auto 10px;
+  border-radius: 10px;
+}
+
+.custom-title {
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   CARDS
+========================= */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   TABELA
+========================= */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+}
+
+.table thead {
+  background: #111 !important;
+  color: #fff;
+}
+
+.table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* =========================
+   FORMULÁRIOS
+========================= */
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  transition: 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 0.15rem rgba(0,0,0,0.15);
+}
+
+/* =========================
+   BOTÕES
+========================= */
+.custom-btn {
+  background-color: #000;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 18px;
+  border: none;
+  transition: 0.3s;
+}
+
+.custom-btn:hover {
+  background-color: #222;
+  transform: scale(1.03);
+}
+
+.btn-outline-primary {
+  border-radius: 8px;
+}
+
+.btn {
+  border-radius: 8px !important;
+}
+
+/* =========================
+   SEÇÕES
+========================= */
+.container {
+  margin-top: 30px;
+}
+
+.card h2 {
+  font-weight: 600;
+}
+
+/* =========================
+   BOTÕES DA TABELA
+========================= */
+.table .btn {
+  font-size: 13px;
+  padding: 5px 10px;
+}
+
+/* hover mais suave */
+button:hover {
+  opacity: 0.9;
+}
+
+/* =========================
+   BACKGROUND SUAVE
+========================= */
+.bg-white {
+  background-color: #fff !important;
+  border-radius: 12px;
+}

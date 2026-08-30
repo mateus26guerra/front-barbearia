@@ -1,0 +1,71 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-5 mb-4">
+      <div class="card shadow-sm p-4">
+        <h2 class="text-center mb-4">
+          {{ serviceSelecionadoId ? 'Editar serviço' : 'Novo serviço' }}
+        </h2>
+
+        <div class="mb-3">
+          <label class="form-label">Nome do serviço</label>
+          <input
+            class="form-control"
+            [(ngModel)]="servico.nome"
+            name="nomeServico"
+            placeholder="Corte, barba, sobrancelha"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Valor do serviço</label>
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="servico.valorDoServico"
+            name="valorServico"
+            min="0"
+            step="0.01"
+            required>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button class="btn btn-primary" type="button" (click)="salvarServico()">
+            {{ serviceSelecionadoId ? 'Atualizar serviço' : 'Criar serviço' }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="cancelarEdicao()" *ngIf="serviceSelecionadoId">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card shadow-sm p-4">
+        <h2 class="text-center mb-4">Serviços cadastrados</h2>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Valor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of servicos">
+              <td>{{ item.nome }}</td>
+              <td>{{ item.valorDoServico | currency:'BRL' }}</td>
+              <td>
+                <button class="btn btn-sm btn-primary me-2" type="button" (click)="editarServico(item)">Editar</button>
+                <button class="btn btn-sm btn-danger" type="button" (click)="excluirServico(item.id)">Excluir</button>
+              </td>
+            </tr>
+            <tr *ngIf="servicos.length === 0">
+              <td colspan="3" class="text-center">Nenhum serviço cadastrado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

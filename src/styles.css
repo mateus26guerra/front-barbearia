@@ -1,11 +1,30 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
 
 * {
-  font-family: "Big Shoulders Stencil", sans-serif;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: #f7d94c;
+  color: #151515;
+}
+
 body {
-  background-color: #fbe800; /* Cinza bem claro */
+  min-height: 100vh;
+  background: #f7d94c;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }
